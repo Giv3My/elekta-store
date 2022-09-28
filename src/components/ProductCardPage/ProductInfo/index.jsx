@@ -5,17 +5,16 @@ import { addToCart } from '../../../redux/slices/cartSlice';
 import { useGetProducstInfo } from '../../../hooks';
 
 import ColorPicker from './ColorPicker';
-import { Rating, LikeButton, ProductPrice } from '../../General/ui';
+import { Rating, LikeButton, ProductPrice, QuantityButtons } from '../../General/ui';
 import { Button } from '@mui/material';
 import { Arrow } from '../../../assets/img/general';
-import { QuantityButtons } from '../../General/ui/QuantityButtons/index';
 
 export const ProductInfo = ({ item }) => {
   const dispatch = useDispatch();
-  const { existInCart, addedCount } = useGetProducstInfo(item._id);
   const { existInWishlist } = useGetProducstInfo(item._id);
 
   const [selectedColorId, setSelectedColorId] = React.useState(1);
+  const [count, setCount] = React.useState(1);
 
   const handleAddToCart = () => {
     const newCartItem = {
@@ -26,6 +25,7 @@ export const ProductInfo = ({ item }) => {
       price: item.price,
       state: item.state,
       color: item.colors[selectedColorId - 1].color,
+      quantity: count,
     };
 
     dispatch(addToCart(newCartItem));
@@ -64,7 +64,7 @@ export const ProductInfo = ({ item }) => {
       <div className="product-color-palette">
         <div className="product-color-palette__title">
           <p className="product-color-palette__title-text">Color Palette</p>
-          {existInCart && <p className="product-color-palette__title-text">Quantity</p>}
+          <p className="product-color-palette__title-text">Quantity</p>
         </div>
         <div className="product-color-palette__bottom">
           <ColorPicker
@@ -72,7 +72,7 @@ export const ProductInfo = ({ item }) => {
             currentId={selectedColorId}
             onColorBtnClick={handleColorChange}
           />
-          {existInCart && <QuantityButtons id={item.id}>{addedCount}</QuantityButtons>}
+          <QuantityButtons setCount={setCount}>{count}</QuantityButtons>
         </div>
       </div>
       <Button

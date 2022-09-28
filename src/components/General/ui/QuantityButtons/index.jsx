@@ -1,19 +1,18 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-
-import { increment, decrement } from '../../../../redux/slices/cartSlice';
 
 import { QuantityMinus, QuantityPlus } from '../../../../assets/img/general';
 
-export const QuantityButtons = ({ id, children }) => {
-  const dispatch = useDispatch();
-
+export const QuantityButtons = ({ children, setCount }) => {
   const handleIncrement = () => {
-    dispatch(increment(id));
+    setCount((prev) => ++prev);
   };
 
   const handleDecrement = () => {
-    dispatch(decrement(id));
+    if (children <= 1) {
+      return;
+    }
+
+    setCount((prev) => --prev);
   };
 
   return (
@@ -23,6 +22,7 @@ export const QuantityButtons = ({ id, children }) => {
         className={
           children > 1 ? 'quantity-buttons__button' : 'quantity-buttons__button disable'
         }
+        disabled={children > 1 ? false : true}
         onClick={handleDecrement}
       >
         <span className="quantity-buttons__button-icon">

@@ -28,6 +28,7 @@
     &.disable {
       border-color: $primary-gray;
       background-color: transparent;
+      cursor: not-allowed;
 
       svg path {
         fill: $primary-gray;

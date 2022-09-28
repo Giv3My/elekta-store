@@ -9,7 +9,6 @@ export const useGetProducstInfo = (id) => {
   const { wishlist } = useSelector(selectWishlistData);
 
   const [existInCart, setExistInCart] = React.useState(false);
-  const [addedCount, setAddedCount] = React.useState(0);
   const [existInWishlist, setExistInWishlist] = React.useState(false);
   const [itemsWithSale, setItemsWithSale] = React.useState(false);
 
@@ -18,8 +17,6 @@ export const useGetProducstInfo = (id) => {
 
     if (exist) {
       setExistInCart(true);
-
-      setAddedCount(exist.quantity);
     } else {
       setExistInCart(false);
     }
@@ -37,5 +34,5 @@ export const useGetProducstInfo = (id) => {
     exist ? setExistInWishlist(true) : setExistInWishlist(false);
   }, [wishlist]);
 
-  return { existInCart, existInWishlist, addedCount, itemsWithSale };
+  return { existInCart, existInWishlist, itemsWithSale };
 };

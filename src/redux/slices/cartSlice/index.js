@@ -44,10 +44,18 @@ const cartSlice = createSlice({
       const exist = state.cart.goods.find((item) => item.id === payload.id);
 
       if (exist) {
-        exist.quantity++;
+        exist.quantity += payload.quantity;
       } else {
-        state.cart.goods.push({ ...payload, quantity: 1 });
+        state.cart.goods.push({ ...payload });
       }
+
+      state.cart.totalPrice = updateTotalPrice(state.cart.goods);
+      state.cart.quantity = updateQuantity(state.cart.goods);
+    },
+    setItemQuantity: (state, { payload }) => {
+      const exist = state.cart.goods.find((item) => item.id === payload.id);
+
+      exist.quantity = payload.quantity;
 
       state.cart.totalPrice = updateTotalPrice(state.cart.goods);
       state.cart.quantity = updateQuantity(state.cart.goods);
@@ -60,25 +68,6 @@ const cartSlice = createSlice({
       } else {
         state.cart.goods.push({ ...payload, quantity: 1 });
       }
-
-      state.cart.totalPrice = updateTotalPrice(state.cart.goods);
-      state.cart.quantity = updateQuantity(state.cart.goods);
-    },
-    increment: (state, { payload }) => {
-      const exist = state.cart.goods.find((item) => item.id === payload);
-      exist.quantity++;
-
-      state.cart.totalPrice = updateTotalPrice(state.cart.goods);
-      state.cart.quantity = updateQuantity(state.cart.goods);
-    },
-    decrement: (state, { payload }) => {
-      const exist = state.cart.goods.find((item) => item.id === payload);
-
-      if (exist.quantity === 1) {
-        return;
-      }
-
-      exist.quantity--;
 
       state.cart.totalPrice = updateTotalPrice(state.cart.goods);
       state.cart.quantity = updateQuantity(state.cart.goods);
@@ -108,7 +97,7 @@ const cartSlice = createSlice({
 
 export const selectCartData = ({ cart }) => cart;
 
-export const { addToCart, toggleCart, increment, decrement, removeFromCart, clearCart } =
+export const { addToCart, toggleCart, setItemQuantity, removeFromCart, clearCart } =
   cartSlice.actions;
 
 export default cartSlice.reducer;
